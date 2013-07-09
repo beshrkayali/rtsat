@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tweets Sentiment Analysis Tool</title>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    <script src="/static/js/socketio/socket.io.min.js"></script>
+
+    <link href='http://fonts.googleapis.com/css?family=Denk+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="/static/js/smoothie.js"></script>
+    
+    <script type="text/javascript">
+        // Randomly add a data point every 500ms
+        var positiveTable = new TimeSeries();
+        var negativeTable = new TimeSeries();
+      
+        function createTimeline() {
+            var chart1 = new SmoothieChart({  grid: { strokeStyle:'rgb(125, 125, 125)', fillStyle:'rgb(60, 60, 60)',
+                lineWidth: 1, millisPerLine: 3000, verticalSections: 1, },
+                labels: { fillStyle:'rgb(255, 255, 255)' }
+            });
+
+            chart1.addTimeSeries(positiveTable, { strokeStyle: 'rgba(0, 255, 0, 1)', fillStyle: 'rgba(0, 255, 0, 0.2)', lineWidth: 2 });
+        
+            
+            chart1.addTimeSeries(negativeTable, { strokeStyle: 'rgba(255, 0, 0, 1)', fillStyle: 'rgba(255, 0, 0, 0.2)', lineWidth: 2 });
+            
+            chart1.streamTo(document.getElementById("chart1"), 500);
+        }
+
+        $(document).ready(function() {
+            var socket = io.connect('/tweets');
+            socket.on('connect', function() {
+                console.log("socket connected");
+            });
+            socket.on('disconnect', function() {
+                console.log("socket disconnected");
+            });
+
+            socket.on('tweet_text', function(data) {
+                $('.tweet_area p').text(data);
+                //addMessage(data);
+            });
+
+            socket.on('sentiment_positive', function(data){
+                positiveTable.append(new Date().getTime(), data);
+            });
+
+            socket.on('sentiment_negative', function(data){
+                negativeTable.append(new Date().getTime(), data);
+            });
+
+        });
+    </script>
+
+    <style>
+        body{
+            background:#000;
+            color:#fff;
+            text-align: center;
+            padding-top:50px;
+            font-family: 'Inconsolata', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5{
+            font-family: 'Denk One', sans-serif;
+        }
+
+        .body{
+            width:960px;
+            margin:10px auto;
+            text-align: left;
+        }
+
+        .tweet_area{
+            width:900px;
+            margin:10px auto;
+            text-align: left;
+            padding:30px;
+            height:70px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+            border:solid 1px #ebebeb;
+        }
+
+    </style>
+
+  </head>
+  <body onload="createTimeline()">
+    <a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+
+    <h1>Realtime Tweets Sentiment Analysis Tool</h1>
+    
+    <canvas id="chart1" width="960" height="200" style="margin:0 auto; display:block;"></canvas>
+    
+    <div class="tweet_area">
+        <p>...</p>
+    </div>
+
+    <div class="body">
+        <p>An experiment using Flask, Gevent-socketio, Smoothie charts, and Twitter's Streaming API. The intention is to provide a simple real-time chart of sentiment analysis of tweets following a specific topic. Read more on Github.</p>
+        
+        <p>Licensed under MIT (source available on Github) by Beshr Kayali.</p>
+
+    </div>
+
+  </body>
+</html>
