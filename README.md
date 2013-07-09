@@ -11,6 +11,11 @@ Things used:
 
 The sentiment analysis technique is a very simple implementation based on Neal Caren's great [introduction](http://nealcaren.web.unc.edu/an-introduction-to-text-analysis-with-python-part-1/).
 
+
+Demo
+====
+<a href="http://rtsat.beshr.com"><img src="http://i.imgur.com/Ay2k5rY.jpg"></a>
+
 License
 =======
 Licensed under MIT.
