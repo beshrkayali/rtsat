@@ -14,6 +14,8 @@ The sentiment analysis technique is a very simple implementation based on Neal C
 
 Demo
 ====
+The following is a demo of tweets that contain the word "china".
+
 <a href="http://rtsat.beshr.com"><img src="http://i.imgur.com/LTotrQB.jpg"></a>
 
 License
