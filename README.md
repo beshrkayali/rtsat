@@ -18,6 +18,8 @@ The following is a demo of tweets that contain the word "china".
 
 <a href="http://rtsat.beshr.com"><img src="http://i.imgur.com/LTotrQB.jpg"></a>
 
+[Watch a video instead](http://www.youtube.com/watch?v=xPomnQhO_Tw)
+
 License
 =======
 Licensed under MIT.
